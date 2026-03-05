@@ -1,4 +1,3 @@
-// src/api/weather.ts
 import type { Weather, Forecast } from "../types/weather"
 
 const API_KEY = import.meta.env.VITE_OWM_API_KEY as string
