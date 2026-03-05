@@ -1,4 +1,3 @@
-// src/components/Forecast.tsx
 import styled from "styled-components"
 import { Icon } from "@iconify/react"
 import { mapIcon, iconColor } from "../utils/icons"
