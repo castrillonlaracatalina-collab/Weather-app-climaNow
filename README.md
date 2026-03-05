@@ -48,4 +48,4 @@ http://localhost:5173
 - Consumo de API: La aplicación consume una API pública de clima para obtener información actualizada sobre las condiciones meteorológicas y el pronóstico por ciudad.
 
 ## 🌐 Deploy en producción
-Link: https://clima-now-weather-app.vercel.app/
+Link: https://weather-app-clima-now.vercel.app/
