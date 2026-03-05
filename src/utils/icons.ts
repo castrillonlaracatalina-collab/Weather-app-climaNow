@@ -23,12 +23,12 @@ export function mapIcon(condition: string, isDay = true) {
 
 export function iconColor(condition: string) {
   const c = (condition || "").toLowerCase()
-  if (hasAny(c, ["clear", "despejado", "cielo claro"]))               return "#f59e0b" // ámbar
-  if (hasAny(c, ["cloud", "nube", "nuboso", "nublado", "dispersas"])) return "#60a5fa" // azul suave
-  if (hasAny(c, ["rain", "lluvia", "aguacero"]))                       return "#0ea5e9" // celeste
+  if (hasAny(c, ["clear", "despejado", "cielo claro"]))               return "#f59e0b" 
+  if (hasAny(c, ["cloud", "nube", "nuboso", "nublado", "dispersas"])) return "#60a5fa" 
+  if (hasAny(c, ["rain", "lluvia", "aguacero"]))                       return "#0ea5e9" 
   if (hasAny(c, ["drizzle", "llovizna"]))                              return "#acdbef"
-  if (hasAny(c, ["thunder", "tormenta"]))                              return "#88bcecc4" // índigo
-  if (hasAny(c, ["snow", "nieve"]))                                    return "#86cbf1" // cian
-  if (hasAny(c, ["mist", "fog", "niebla", "neblina", "bruma"]))        return "#94a3b8" // slate
+  if (hasAny(c, ["thunder", "tormenta"]))                              return "#88bcecc4" 
+  if (hasAny(c, ["snow", "nieve"]))                                    return "#86cbf1"
+  if (hasAny(c, ["mist", "fog", "niebla", "neblina", "bruma"]))        return "#94a3b8" 
   return "#60a5fa"
 }
