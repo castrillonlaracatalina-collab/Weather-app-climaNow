@@ -1,4 +1,3 @@
-// src/utils/icons.ts
 function hasAny(haystack: string, needles: string[]) {
   const h = (haystack || "").toLowerCase()
   return needles.some(n => h.includes(n))
