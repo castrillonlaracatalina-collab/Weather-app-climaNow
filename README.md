@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+## APLICACIÓN DEL TIEMPO - CLIMANOW
+Manténgase a la vanguardia del clima, sin esfuerzo y con confianza.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web desarrollada en React + TypeScript que permite consultar el clima actual y el pronóstico del tiempo para diferentes ciudades del mundo utilizando una API pública de clima.
 
-Currently, two official plugins are available:
+La aplicación muestra información como:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Temperatura actual
+- Condición climática
+- Íconos dinámicos según el clima
+- Pronóstico de los próximos días
 
-## React Compiler
+## Tecnologías utilizadas
+- React
+- TypeScript
+- Styled Components
+- API pública de clima (OpenWeatherMap)
+- Vite para la configuración del proyecto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ⚙️ Instalación y ejecución del proyecto
+Sigue estos pasos para ejecutar el proyecto localmente.
 
-## Expanding the ESLint configuration
+1️⃣ Clonar el repositorio
+git clone https://github.com/castrillonlaracatalina-collab/ClimaNow-weather-app.git
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2️⃣ Entrar al proyecto
+cd ClimaNow-weather-app
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+3️⃣ Instalar dependencias
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+4️⃣ En la raíz del proyecto crea un archivo: .env y Y agrega tu API key: VITE_OWM_API_KEY=TU_API_KEY_AQUI
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+5️⃣Ejecutar la aplicación
+npm run dev
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Luego abre en el navegador:
+http://localhost:5173
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧠 Decisiones técnicas
+- React + TypeScript: Se utilizó TypeScript para mejorar la seguridad del código mediante tipado estático, lo que ayuda a prevenir errores y facilita el mantenimiento del proyecto.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Componentización: La aplicación se organizó en componentes reutilizables, permitiendo una estructura más clara y escalable.
+
+- Styled Components: Se utilizó Styled Components para encapsular los estilos dentro de los componentes y facilitar el mantenimiento del diseño, evitando conflictos entre estilos globales.
+
+- Consumo de API: La aplicación consume una API pública de clima para obtener información actualizada sobre las condiciones meteorológicas y el pronóstico por ciudad.
+
+## 🌐 Deploy en producción
+Link: https://clima-now-weather-app.vercel.app/
