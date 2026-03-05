@@ -6,7 +6,6 @@ import { mapIcon, iconColor } from "../utils/icons"
 interface Props {
   weather: Weather
 }
-
 const Card = styled.section`
   position: relative;
   margin-top: 18px;
