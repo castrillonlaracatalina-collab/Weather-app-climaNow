@@ -12,56 +12,35 @@ import ForecastList from "./components/Forecast"
 
 const Page = styled.div<{ $bg: string }>`
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; flex-direction: column; align-items: center;
   background: ${({ $bg }) => $bg};
   font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
-  padding-bottom: 40px;
-  transition: background 0.4s ease;
+  padding-bottom: 40px; transition: background .4s ease;
 `
 
 const Container = styled.div`
-  width: 100%;
-  max-width: 1100px;
-  padding: 0 16px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* ← centro todo */
+  width: 100%; max-width: 1100px; padding: 0 16px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center;
 `
 
 const Title = styled.h1`
   font-size: clamp(28px, 5vw, 48px);
-  margin-top: 40px;
-  letter-spacing: -0.02em;
-  color: #000000;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.3);
-  text-align: center;
+  margin-top: 40px; letter-spacing: -0.02em;
+  color: #0f172a; text-shadow: 0 2px 10px rgba(255,255,255,.6);
 `
 
 const SearchWrap = styled.div`
   margin: 20px 0 6px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
 
   & > input {
-    padding: 10px 14px;
-    min-width: 260px;
-    border-radius: 10px;
-    border: 1px solid rgba(0,0,0,0.15);
-    outline: none;
+    padding: 10px 14px; min-width: 260px; border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.15); outline: none;
+    background: #ffffffaa; backdrop-filter: blur(4px);
   }
   & > button {
-    padding: 10px 18px;
-    cursor: pointer;
-    border: 0;
-    border-radius: 10px;
-    background: #111827;
-    color: #fff;
-    font-weight: 700;
+    padding: 10px 18px; border: 0; border-radius: 10px; cursor: pointer;
+    background: #111827; color: #fff; font-weight: 700;
     transition: transform .15s ease, opacity .2s ease, box-shadow .2s ease;
     box-shadow: 0 10px 24px rgba(0,0,0,0.18);
   }
@@ -70,13 +49,21 @@ const SearchWrap = styled.div`
 `
 
 const InlineMsg = styled.p`
-  color: #ffffff;
-  opacity: 0.9;
-  text-align: center;
+  color: #0f172a; opacity: 0.9; text-align: center;
+  background: #ffffff66; padding: 6px 10px; border-radius: 10px;
 `
+
+// 🔤 Capitaliza sin perder tildes
+const toTitle = (s: string) =>
+  s
+    .trim()
+    .split(/\s+/)
+    .map(w => w.charAt(0).toLocaleUpperCase("es-ES") + w.slice(1))
+    .join(" ")
 
 function App() {
   const [city, setCity] = useState("")
+  const [displayCity, setDisplayCity] = useState<string>("") // 👈 nombre “como lo buscas”
   const [weather, setWeather] = useState<Weather | null>(null)
   const [forecast, setForecast] = useState<Forecast | null>(null)
   const [error, setError] = useState("")
@@ -90,6 +77,7 @@ function App() {
     const savedCity = localStorage.getItem("lastCity")
     if (savedCity) {
       setCity(savedCity)
+      setDisplayCity(toTitle(savedCity)) // 👈 respeta cómo se buscó
       handleSearch(savedCity)
     }
   }, [])
@@ -98,14 +86,15 @@ function App() {
     const finalCity = (cityToSearch ?? city).trim()
     if (!finalCity) return
     try {
-      setError("")
-      setLoading(true)
-      const [currentData, forecastData] = await Promise.all([
+      setError(""); setLoading(true)
+      // 👇 Muestra el nombre como lo tecleaste (antes del fetch), con mayúsculas bonitas
+      setDisplayCity(toTitle(finalCity))
+
+      const [w, f] = await Promise.all([
         getCurrentWeather(finalCity),
         getForecast(finalCity),
       ])
-      setWeather(currentData)
-      setForecast(forecastData)
+      setWeather(w); setForecast(f)
       localStorage.setItem("lastCity", finalCity)
     } catch (e: any) {
       const msg = String(e?.message || "")
@@ -113,21 +102,16 @@ function App() {
       else if (msg.includes("404")) setError("Ciudad no encontrada (404).")
       else if (msg.includes("429")) setError("Límite de peticiones excedido (429).")
       else                          setError("Error de red o del servicio.")
-      setWeather(null)
-      setForecast(null)
+      setWeather(null); setForecast(null)
     } finally {
       setLoading(false)
     }
   }
 
   const handleUseMyLocation = async () => {
-    if (!("geolocation" in navigator)) {
-      setError("Tu navegador no soporta geolocalización.")
-      return
-    }
+    if (!("geolocation" in navigator)) { setError("Tu navegador no soporta geolocalización."); return }
     try {
-      setError("")
-      setLoading(true)
+      setError(""); setLoading(true)
       const coords = await new Promise<GeolocationCoordinates>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
           (pos) => resolve(pos.coords),
@@ -139,21 +123,20 @@ function App() {
         getCurrentWeatherByCoords(coords.latitude, coords.longitude),
         getForecastByCoords(coords.latitude, coords.longitude),
       ])
-      setWeather(w)
-      setForecast(f)
-      setCity(w.name)
-      localStorage.setItem("lastCity", w.name)
-    } catch (e: any) {
-      const msg = String(e?.message || "")
-      if (msg.includes("Permission")) setError("Permiso de geolocalización denegado.")
-      else setError("No se pudo obtener tu ubicación o el clima.")
+      setWeather(w); setForecast(f)
+      // 👇 En geoloc, usa el nombre del API (p.ej. “Medellín”)
+      setDisplayCity(toTitle(w.name || ""))
+      setCity(w.name || "")
+      localStorage.setItem("lastCity", w.name || "")
+    } catch {
+      setError("No se pudo obtener tu ubicación o el clima.")
     } finally {
       setLoading(false)
     }
   }
 
   const getBackground = () => {
-    if (!weather) return "linear-gradient(135deg, #b9ecf4, #aee0f4, #bcf2f2)" // degradé alegre
+    if (!weather) return "linear-gradient(135deg, #acebf5, #87d3f6, #98e9f6)"
     const condition = weather.weather[0].main.toLowerCase()
     if (condition.includes("cloud"))
       return "linear-gradient(135deg, #6e6c8e, #abc8ef, #475569)"
@@ -169,6 +152,9 @@ function App() {
   }
 
   const showEmpty = !weather && !loading && !error
+  const cityLabel = weather
+    ? `${displayCity || weather.name}, ${weather.sys.country}` // 👈 label final
+    : displayCity
 
   return (
     <Page $bg={getBackground()}>
@@ -178,7 +164,7 @@ function App() {
         <SearchWrap>
           <input
             type="text"
-            placeholder="Buscar ciudad "
+            placeholder="Buscar ciudad"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -192,16 +178,11 @@ function App() {
         </SearchWrap>
 
         {loading && <InlineMsg>Cargando...</InlineMsg>}
-        {error && <InlineMsg style={{ color: "#000000" }}>{error}</InlineMsg>}
-        {showEmpty && ( <InlineMsg>
-            🌎 Busca una ciudad para ver el clima actual y el pronóstico.
-        </InlineMsg>
-   )}
-        
+        {error && <InlineMsg style={{ color: "#1a1919", background: "#ece1e1" }}>{error}</InlineMsg>}
+        {showEmpty && <InlineMsg>Ingresa una ciudad para ver el clima y el pronóstico.</InlineMsg>}
 
-        {weather && <WeatherCard weather={weather} />}
-
-        {forecast && <ForecastList list={forecast.list} />}
+        {weather && <WeatherCard weather={weather} cityLabel={cityLabel} />}
+        {forecast && <ForecastList list={forecast.list} title={`Pronóstico a 5 días`} />}
       </Container>
     </Page>
   )
