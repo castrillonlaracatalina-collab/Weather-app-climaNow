@@ -34,7 +34,7 @@ export async function getForecast(city: string): Promise<Forecast> {
   return res.json()
 }
 
-// Opcional (punto extra): por coordenadas (geolocalización)
+// (geolocalización)
 export async function getCurrentWeatherByCoords(
   lat: number,
   lon: number
