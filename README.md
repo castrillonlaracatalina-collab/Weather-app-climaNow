@@ -30,7 +30,7 @@ cd ClimaNow-weather-app
 npm install
 
 4️⃣ En la raíz del proyecto crea un archivo: .env y Y agrega tu API key: VITE_OWM_API_KEY=TU_API_KEY_AQUI
-Esta API Key la obtienes gratis en https://openweathermap.org
+- Esta API Key la obtienes gratis en https://openweathermap.org
 
 5️⃣Ejecutar la aplicación
 npm run dev
