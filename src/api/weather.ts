@@ -1,4 +1,4 @@
-import type { Weather, Forecast } from "../types/weather"
+import type { Weather, Forecast } from "../types/weather.ts"
 
 const API_KEY = import.meta.env.VITE_OWM_API_KEY as string
 const BASE_URL = "https://api.openweathermap.org/data/2.5"
@@ -12,7 +12,7 @@ function ensureOk(res: Response, tag: string) {
   return res
 }
 
-// 🌤️ Clima actual por ciudad
+// Clima actual por ciudad
 export async function getCurrentWeather(city: string): Promise<Weather> {
   const url = `${BASE_URL}/weather?q=${encodeURIComponent(
     city
@@ -23,7 +23,7 @@ export async function getCurrentWeather(city: string): Promise<Weather> {
   return res.json()
 }
 
-// 🌦️ Pronóstico 5 días / 3 horas por ciudad
+// Pronóstico 5 días 
 export async function getForecast(city: string): Promise<Forecast> {
   const url = `${BASE_URL}/forecast?q=${encodeURIComponent(
     city
@@ -34,7 +34,7 @@ export async function getForecast(city: string): Promise<Forecast> {
   return res.json()
 }
 
-// (geolocalización)
+//(geolocalización)
 export async function getCurrentWeatherByCoords(
   lat: number,
   lon: number
