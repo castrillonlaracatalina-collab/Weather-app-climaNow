@@ -53,7 +53,6 @@ const InlineMsg = styled.p`
   background: #ffffff66; padding: 6px 10px; border-radius: 10px;
 `
 
-// 🔤 Capitaliza sin perder tildes
 const toTitle = (s: string) =>
   s
     .trim()
@@ -77,7 +76,7 @@ function App() {
     const savedCity = localStorage.getItem("lastCity")
     if (savedCity) {
       setCity(savedCity)
-      setDisplayCity(toTitle(savedCity)) // 👈 respeta cómo se buscó
+      setDisplayCity(toTitle(savedCity))
       handleSearch(savedCity)
     }
   }, [])
@@ -87,7 +86,7 @@ function App() {
     if (!finalCity) return
     try {
       setError(""); setLoading(true)
-      // 👇 Muestra el nombre como lo tecleaste (antes del fetch), con mayúsculas bonitas
+     
       setDisplayCity(toTitle(finalCity))
 
       const [w, f] = await Promise.all([
@@ -124,7 +123,7 @@ function App() {
         getForecastByCoords(coords.latitude, coords.longitude),
       ])
       setWeather(w); setForecast(f)
-      // 👇 En geoloc, usa el nombre del API (p.ej. “Medellín”)
+     
       setDisplayCity(toTitle(w.name || ""))
       setCity(w.name || "")
       localStorage.setItem("lastCity", w.name || "")
@@ -153,7 +152,7 @@ function App() {
 
   const showEmpty = !weather && !loading && !error
   const cityLabel = weather
-    ? `${displayCity || weather.name}, ${weather.sys.country}` // 👈 label final
+    ? `${displayCity || weather.name}, ${weather.sys.country}` 
     : displayCity
 
   return (
